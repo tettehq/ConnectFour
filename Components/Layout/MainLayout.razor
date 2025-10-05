@@ -1,0 +1,44 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+<script>
+    window.playSound = (id, rate = 1.0) => {
+        const audioElem = document.getElementById(id);
+        if (!audioElem) return;
+
+        // Uses Web Audio API to control playback speed of sound effects
+        const context = new (window.AudioContext || window.webkitAudioContext)();
+        fetch(audioElem.src)
+            .then(resp => resp.arrayBuffer())
+            .then(buf => context.decodeAudioData(buf))
+            .then(decoded => {
+                const source = context.createBufferSource();
+                source.buffer = decoded;
+                source.playbackRate.value = rate;
+                source.connect(context.destination);
+                source.start(0);
+            });
+    };
+
+</script>
